@@ -54,10 +54,10 @@ namespace Ex03.GarageLogic
             s_VehiclesCards.Add(vehicleCard.Vehicle.LicenseNumber, vehicleCard);
         }
 
-        public List<string> GetAllGarageLicensesNumbers(eVehicleStatus? i_VehicleStatus = null)
+        public List<string> GetGarageLicensesNumbersByFilter(eVehicleStatus? i_VehicleStatusFilter = null)
         {
             List<string> licensesNumbers = new List<string>();
-            if (i_VehicleStatus == null)
+            if (i_VehicleStatusFilter == null)
             {
                 foreach (string key in s_VehiclesCards.Keys)
                 {
@@ -66,7 +66,7 @@ namespace Ex03.GarageLogic
             }
             else
             {
-                licensesNumbers = s_VehiclesCards?.Where(x => x.Value.VehicleStatus == i_VehicleStatus)
+                licensesNumbers = s_VehiclesCards?.Where(x => x.Value.VehicleStatus == i_VehicleStatusFilter)
                                   .Select(x => x.Key)
                                   .ToList();
             }
