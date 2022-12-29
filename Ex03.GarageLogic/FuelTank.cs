@@ -15,7 +15,7 @@ namespace Ex03.GarageLogic
             get { return r_FuelType; }
         }
 
-        internal void ChangeAmountOfFuel(float i_AmountOfFuelInLiters, eFuelType i_FuelType)
+        public void ChangeAmountOfFuel(float i_AmountOfFuelInLiters, eFuelType i_FuelType)
         {
             if (i_AmountOfFuelInLiters > 0 && i_FuelType == r_FuelType && i_AmountOfFuelInLiters + CurrentEnergy <= MaxEnergyCapacity)
             {
