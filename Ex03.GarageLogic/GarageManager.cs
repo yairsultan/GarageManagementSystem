@@ -53,5 +53,25 @@ namespace Ex03.GarageLogic
             VehicleCard vehicleCard = new VehicleCard(vehicle);
             s_VehiclesCards.Add(vehicleCard.Vehicle.LicenseNumber, vehicleCard);
         }
+
+        public List<string> GetAllGarageLicensesNumbers(eVehicleStatus? i_VehicleStatus = null)
+        {
+            List<string> licensesNumbers = new List<string>();
+            if (i_VehicleStatus == null)
+            {
+                foreach (string key in s_VehiclesCards.Keys)
+                {
+                    licensesNumbers.Add(key);
+                }
+            }
+            else
+            {
+                licensesNumbers = s_VehiclesCards?.Where(x => x.Value.VehicleStatus == i_VehicleStatus)
+                                  .Select(x => x.Key)
+                                  .ToList();
+            }
+
+            return licensesNumbers;
+        }
     }
 }
