@@ -66,7 +66,7 @@ namespace Ex03.GarageLogic
             }
             else
             {
-                licensesNumbers = s_VehiclesCards.Where(x => x.Value.VehicleStatus == i_VehicleStatus)
+                licensesNumbers = s_VehiclesCards?.Where(x => x.Value.VehicleStatus == i_VehicleStatus)
                                   .Select(x => x.Key)
                                   .ToList();
             }
