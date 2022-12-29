@@ -74,24 +74,24 @@ namespace Ex03.GarageLogic
             return licensesNumbers;
         }
 
-        public bool ChangeStatusOfVehicle(string i_licenseNumber, eVehicleStatus i_VehicleStatus)
+        public bool ChangeStatusOfVehicle(string i_LicenseNumber, eVehicleStatus i_VehicleStatus)
         {
             bool isChange = false;
-            if(s_VehiclesCards.ContainsKey(i_licenseNumber))
+            if(s_VehiclesCards.ContainsKey(i_LicenseNumber))
             {
-                s_VehiclesCards[i_licenseNumber].VehicleStatus = i_VehicleStatus;
+                s_VehiclesCards[i_LicenseNumber].VehicleStatus = i_VehicleStatus;
                 isChange = true;
             }
 
             return isChange;
         }
 
-        public bool InflateVehicleWheelsToMaximum(string i_licenseNumber, eVehicleStatus i_VehicleStatus)
+        public bool InflateVehicleWheelsToMaximum(string i_LicenseNumber, eVehicleStatus i_VehicleStatus)
         {
             bool isInflate = false;
-            if (s_VehiclesCards.ContainsKey(i_licenseNumber))
+            if (s_VehiclesCards.ContainsKey(i_LicenseNumber))
             {
-                List<Wheel> vehicleWheels = s_VehiclesCards[i_licenseNumber]?.Vehicle?.Wheels;
+                List<Wheel> vehicleWheels = s_VehiclesCards[i_LicenseNumber]?.Vehicle?.Wheels;
                 foreach (Wheel wheel in vehicleWheels)
                 {
                     wheel.InflateToMax();
@@ -101,6 +101,11 @@ namespace Ex03.GarageLogic
             }
 
             return isInflate;
+        }
+
+        public bool FuelUpGasolineVehicle(string i_licenseNumber, eFuelType i_FuelType, float i_FuelQuantity)
+        {
+            bool isFuelUp
         }
     }
 }
