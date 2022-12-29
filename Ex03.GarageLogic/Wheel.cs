@@ -60,5 +60,9 @@ namespace Ex03.GarageLogic
                 return false;
             }
         }
+        public void InflateToMax()
+        {
+            Inflate(r_MaxAirPressure - m_CurrentAirPressure);
+        }
     }
 }
