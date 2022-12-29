@@ -53,11 +53,81 @@ namespace ConsoleUI
             switch (selectedService)
             {
                 case 1:
-                    selectServiceFromMenu();
+                    insertNewVehicle();
                     break;
                 case 2:
-
+                    displayLicensesInGarage();
+                    break;
+                case 3:
+                    changeVehicleStatus();
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
             }
+        }
+
+        private void changeVehicleStatus()
+        {
+            List<string> licenseNumbersToDisplay = new List<string>();
+            StringBuilder message = new StringBuilder();
+            message.AppendLine($"Please select the status you want to filter by:{Environment.NewLine}");
+            int index = 1;
+            foreach (string status in Enum.GetValues(typeof(eVehicleStatus)))
+            {
+                message.AppendLine($"{index++}. {status}");
+            }
+            message.AppendLine($"{index}. Dont filter by status");
+            int selectedFilter = getIntInput(message, 1, 4);
+            if (selectedFilter != 4)
+            {
+                licenseNumbersToDisplay = s_GarageManager.GetGarageLicensesNumbersByFilter((eVehicleStatus)selectedFilter);
+            }
+            else
+            {
+                licenseNumbersToDisplay = s_GarageManager.GetGarageLicensesNumbersByFilter();
+            }
+
+            if (licenseNumbersToDisplay.Count > 0)
+            {
+                foreach(string licenseNumber in licenseNumbersToDisplay)
+                {
+                    Console.WriteLine(licenseNumber);
+                }
+            }
+            else
+            {
+                Console.WriteLine("No license number found that match ypur filter");
+            }
+        }
+
+        private List<string> displayLicensesInGarage()
+        {
+            List<string> licenseNumbersResult = new List<string>();
+            StringBuilder message = new StringBuilder();
+            message.AppendLine($"Please select the status you want to filter by:{Environment.NewLine}");
+            int index = 1;
+            foreach (string status in Enum.GetValues(typeof(eVehicleStatus)))
+            {
+                message.AppendLine($"{index++}. {status}");
+            }
+            message.AppendLine($"{index}. Dont filter by status");
+            int selectedFilter = getIntInput(message, 1, 4);
+            if(selectedFilter != 4)
+            {
+                licenseNumbersResult = s_GarageManager.GetGarageLicensesNumbersByFilter((eVehicleStatus)selectedFilter);
+            }
+            else
+            {
+                licenseNumbersResult = s_GarageManager.GetGarageLicensesNumbersByFilter();
+            }
+
+            return licenseNumbersResult;
         }
 
         private void insertNewVehicle()
