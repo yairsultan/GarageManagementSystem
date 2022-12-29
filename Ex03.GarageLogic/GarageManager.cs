@@ -73,5 +73,34 @@ namespace Ex03.GarageLogic
 
             return licensesNumbers;
         }
+
+        public bool ChangeStatusOfVehicle(string i_licenseNumber, eVehicleStatus i_VehicleStatus)
+        {
+            bool isChange = false;
+            if(s_VehiclesCards.ContainsKey(i_licenseNumber))
+            {
+                s_VehiclesCards[i_licenseNumber].VehicleStatus = i_VehicleStatus;
+                isChange = true;
+            }
+
+            return isChange;
+        }
+
+        public bool InflateVehicleWheelsToMaximum(string i_licenseNumber, eVehicleStatus i_VehicleStatus)
+        {
+            bool isInflate = false;
+            if (s_VehiclesCards.ContainsKey(i_licenseNumber))
+            {
+                List<Wheel> vehicleWheels = s_VehiclesCards[i_licenseNumber]?.Vehicle?.Wheels;
+                foreach (Wheel wheel in vehicleWheels)
+                {
+                    wheel.InflateToMax();
+                }
+
+                isInflate = true;
+            }
+
+            return isInflate;
+        }
     }
 }

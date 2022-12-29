@@ -56,6 +56,7 @@ namespace ConsoleUI
                     selectServiceFromMenu();
                     break;
                 case 2:
+                    break;
 
             }
         }
