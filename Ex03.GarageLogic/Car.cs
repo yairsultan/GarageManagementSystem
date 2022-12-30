@@ -103,5 +103,16 @@ namespace Ex03.GarageLogic
                 // todo
             }
         }
+
+        public override string ToString()
+        {
+            string resultMessage = string.Format(
+                "Car has {1} doors.{0}Car is {2}.{0}",
+                Environment.NewLine,
+                m_NumberOfDoors,
+                m_Color);
+
+            return resultMessage;
+        }
     }
 }
