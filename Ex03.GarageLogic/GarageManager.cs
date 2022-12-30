@@ -103,9 +103,18 @@ namespace Ex03.GarageLogic
             return isInflate;
         }
 
-        public bool FuelUpGasolineVehicle(string i_licenseNumber, eFuelType i_FuelType, float i_FuelQuantity)
+        public bool FuelUpGasolineVehicle(string i_LicenseNumber, eFuelType i_FuelType, float i_FuelQuantity)
         {
-            bool isFuelUp
+            bool isFueledUp = false;
+            if (s_VehiclesCards.ContainsKey(i_LicenseNumber))
+            {
+                //todo add Exception!!!
+                FuelTank tank = s_VehiclesCards[i_LicenseNumber].Vehicle?.EnergySource as FuelTank;
+                tank.ChangeAmountOfFuel(i_FuelQuantity, i_FuelType);
+                isFueledUp = true;
+            }
+
+            return isFueledUp;
         }
     }
 }
