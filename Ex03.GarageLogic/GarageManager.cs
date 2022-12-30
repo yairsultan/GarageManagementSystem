@@ -106,15 +106,39 @@ namespace Ex03.GarageLogic
         public bool FuelUpGasolineVehicle(string i_LicenseNumber, eFuelType i_FuelType, float i_FuelQuantity)
         {
             bool isFueledUp = false;
+
             if (s_VehiclesCards.ContainsKey(i_LicenseNumber))
             {
-                //todo add Exception!!!
-                FuelTank tank = s_VehiclesCards[i_LicenseNumber].Vehicle?.EnergySource as FuelTank;
-                tank.ChangeAmountOfFuel(i_FuelQuantity, i_FuelType);
+                EnergySource tank = s_VehiclesCards[i_LicenseNumber].Vehicle.EnergySource;
+                if (tank is ElectricBattery)
+                {
+                    throw new ArgumentException("Error! The Vehicle Is Electric! Please Enter Again license number Of A Regular Car.");
+                }
+
+                tank.AddEnergy(i_FuelQuantity, i_FuelType);
                 isFueledUp = true;
             }
 
             return isFueledUp;
+        }
+
+        public bool ChargeElecticVehicle(string i_LicenseNumber, float i_FuelQuantity)
+        {
+            bool isCharged = false;
+
+            if (s_VehiclesCards.ContainsKey(i_LicenseNumber))
+            {
+                EnergySource battery = s_VehiclesCards[i_LicenseNumber].Vehicle.EnergySource;
+                if (battery is FuelTank)
+                {
+                    throw new ArgumentException("Error! The Vehicle Is Regular! Please Enter Again license number Of A Electric Car.");
+                }
+
+                battery.AddEnergy(i_FuelQuantity, null);
+                isCharged = true;
+            }
+
+            return isCharged;
         }
     }
 }

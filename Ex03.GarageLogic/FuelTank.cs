@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ex03.GarageLogic.Exceptions;
 
 namespace Ex03.GarageLogic
 {
@@ -15,12 +16,14 @@ namespace Ex03.GarageLogic
             get { return r_FuelType; }
         }
 
-        public void ChangeAmountOfFuel(float i_AmountOfFuelInLiters, eFuelType i_FuelType)
+        public override void AddEnergy(float i_EnergyQuantity, eFuelType? i_FuelType = null)
         {
-            if (i_AmountOfFuelInLiters > 0 && i_FuelType == r_FuelType && i_AmountOfFuelInLiters + CurrentEnergy <= MaxEnergyCapacity)
+            if(r_FuelType != i_FuelType)
             {
-                CurrentEnergy = CurrentEnergy + i_AmountOfFuelInLiters;
+                throw new ArgumentException("Wrong energy type. please enter the correct type", r_FuelType.ToString());
             }
+
+            CurrentEnergy = CurrentEnergy;
         }
 
         public FuelTank(eFuelType i_FuelType, float i_MaxAmountFuelInLiters)
