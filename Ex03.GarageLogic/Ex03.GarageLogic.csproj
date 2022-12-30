@@ -36,6 +36,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="App.config" />
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
@@ -45,6 +48,7 @@
     <Compile Include="eEnergyType.cs" />
     <Compile Include="eFuelType.cs" />
     <Compile Include="eVehicleType.cs" />
+    <Compile Include="Exceptions\ValueOutOfRangeException.cs" />
     <Compile Include="VehicleCard.cs" />
     <Compile Include="ElectricBattery.cs" />
     <Compile Include="EnergySource.cs" />
@@ -59,8 +63,8 @@
     <Compile Include="Wheel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Analyzer Include="..\..\.NET\A23 Ex01\packages\StyleCop.Analyzers.Unstable.1.2.0.435\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.Unstable.1.2.0.435\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\packages\StyleCop.Analyzers.Unstable.1.2.0.435\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
