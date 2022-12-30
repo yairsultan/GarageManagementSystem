@@ -10,12 +10,9 @@ namespace Ex03.GarageLogic
 {
     public class ElectricBattery : EnergySource
     {
-        private void batteryCharging(float i_NumberOfHour)
+        public override void AddEnergy(float i_EnergyQuantity, eFuelType? i_FuelType = null)
         {
-            if(i_NumberOfHour < 0 && CurrentEnergy + i_NumberOfHour <= MaxEnergyCapacity)
-            {
-                CurrentEnergy += i_NumberOfHour;
-            }
+            CurrentEnergy = CurrentEnergy;
         }
 
         public ElectricBattery(float i_MaxBatteryTimeInHours)
