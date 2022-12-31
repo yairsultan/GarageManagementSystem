@@ -84,5 +84,16 @@ namespace Ex03.GarageLogic
                 // todo
             }
         }
+
+        public override string ToString()
+        {
+            string resultMessage = string.Format(
+                "Motorcycle Has Engine Volume of {1}.{0}Motorcycle Has License Type of {2}.{0}",
+                Environment.NewLine,
+                m_EngineVolume,
+                m_LicenseType);
+
+            return resultMessage;
+        }
     }
 }

@@ -72,5 +72,19 @@ namespace Ex03.GarageLogic
                 // todo
             }
         }
+
+        public override string ToString()
+        {
+            string resultMessage = string.Empty;
+            string isMovingRefrigeratedCargo = m_IsTransportingHazardousMaterials ? "is" : "is not";
+
+            resultMessage = string.Format(
+                "Truck {1} Transporting Hazardous Materials.{0}Truck Maximum Volume Charge is: {2}.{0}",
+                Environment.NewLine,
+                isMovingRefrigeratedCargo,
+                m_MaximumVolumeCharge);
+
+            return resultMessage;
+        }
     }
 }
