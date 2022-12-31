@@ -30,7 +30,6 @@ namespace Ex03.GarageLogic
             i_IsLicenseNumberExist = false;
             if (s_VehiclesCards.ContainsKey(licenseNumber))
             {
-                s_VehiclesCards[licenseNumber].VehicleStatus = eVehicleStatus.InRepair;
                 i_IsLicenseNumberExist = true;
             }
         }
@@ -86,7 +85,7 @@ namespace Ex03.GarageLogic
             return isChange;
         }
 
-        public bool InflateVehicleWheelsToMaximum(string i_LicenseNumber, eVehicleStatus i_VehicleStatus)
+        public bool InflateVehicleWheelsToMaximum(string i_LicenseNumber)
         {
             bool isInflate = false;
             if (s_VehiclesCards.ContainsKey(i_LicenseNumber))
@@ -106,7 +105,6 @@ namespace Ex03.GarageLogic
         public bool FuelUpGasolineVehicle(string i_LicenseNumber, eFuelType i_FuelType, float i_FuelQuantity)
         {
             bool isFueledUp = false;
- 
             if (s_VehiclesCards.ContainsKey(i_LicenseNumber))
             {
                 EnergySource tank = s_VehiclesCards[i_LicenseNumber].Vehicle.EnergySource;

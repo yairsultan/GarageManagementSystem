@@ -10,7 +10,7 @@ namespace ConsoleUI
     {
         public static void Main()
         {
-            ConsoleUIManager consoleUIManager = new ConsoleUIManager();
+            ConsoleUI consoleUIManager = new ConsoleUI();
             consoleUIManager.Run();
         }
     }

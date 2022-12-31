@@ -37,7 +37,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleUIManager.cs" />
+    <Compile Include="ConsoleUI.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>

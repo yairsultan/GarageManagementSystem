@@ -1,13 +1,14 @@
-﻿using Ex03.GarageLogic;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ex03.GarageLogic;
+using Ex03.GarageLogic.Exceptions;
 
 namespace ConsoleUI
 {
-    public class ConsoleUIManager
+    public class ConsoleUI
     {
         private static GarageManager s_GarageManager;
         private static VehicleCardModel s_VehicleCardModel;
@@ -20,16 +21,26 @@ namespace ConsoleUI
 
             while (isGarageRunning)
             {
-                if (!isGarageRunning)
-                {
-                    Console.WriteLine("Goodbye!");
-                    System.Threading.Thread.Sleep(5000);
-                }
-
                 selectServiceFromMenu();
+                isGarageRunning = askIfGarageRunning();
                 Console.Clear();
             }
-            insertNewVehicle();
+
+            Console.WriteLine("Thank you for visiting my garage, good bye!");
+            System.Threading.Thread.Sleep(5000);
+        }
+
+        private bool askIfGarageRunning()
+        {
+            bool isGarageRunning = false;
+            const string k_ReturnToMenuQuestion = "Please enter 'Q' to quit or any other key to return back to select service";
+            string selection = getStringInput(k_ReturnToMenuQuestion);
+            if (selection != "Q")
+            {
+                isGarageRunning = true;
+            }
+
+            return isGarageRunning;
         }
 
         private void selectServiceFromMenu()
@@ -62,8 +73,10 @@ namespace ConsoleUI
                     changeVehicleStatus();
                     break;
                 case 4:
+                    inflateWheelsToMax();
                     break;
                 case 5:
+                    fuelUpGasolineVheicle();
                     break;
                 case 6:
                     break;
@@ -72,38 +85,97 @@ namespace ConsoleUI
             }
         }
 
-        private void changeVehicleStatus()
+        private void inflateWheelsToMax()
         {
-            List<string> licenseNumbersToDisplay = new List<string>();
+            string licenseNumber = getLicenseNumber();
+            try
+            {
+                bool isInflated = s_GarageManager.InflateVehicleWheelsToMaximum(licenseNumber);
+                if (!isInflated)
+                {
+                    Console.WriteLine("Something went wrong.");
+                }
+                else
+                {
+                    Console.WriteLine("All of your wheels are inflated to their max.");
+                }
+            }
+            catch (ValueOutOfRangeException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void fuelUpGasolineVheicle()
+        {
+            string licenseNumber = getLicenseNumber();
             StringBuilder message = new StringBuilder();
-            message.AppendLine($"Please select the status you want to filter by:{Environment.NewLine}");
+            message.AppendLine($"Please select the fuel tpye:{Environment.NewLine}");
             int index = 1;
-            foreach (string status in Enum.GetValues(typeof(eVehicleStatus)))
+            foreach (string status in Enum.GetNames(typeof(eFuelType)))
             {
                 message.AppendLine($"{index++}. {status}");
             }
-            message.AppendLine($"{index}. Dont filter by status");
-            int selectedFilter = getIntInput(message, 1, 4);
-            if (selectedFilter != 4)
+
+            int minEnumValue = Enum.GetValues(typeof(eFuelType)).Cast<int>().Min();
+            int maxEnumValue = Enum.GetValues(typeof(eFuelType)).Cast<int>().Max();
+            int fuelType = getIntInput(message, minEnumValue, maxEnumValue);
+            message.Clear();
+            message.AppendLine("Please enter the amount of fuel you want to add:");
+            float fuelQuantity = getFloatInput(message);
+            try
             {
-                licenseNumbersToDisplay = s_GarageManager.GetGarageLicensesNumbersByFilter((eVehicleStatus)selectedFilter);
+                s_GarageManager.FuelUpGasolineVehicle(licenseNumber, (eFuelType)fuelType, fuelQuantity);
             }
-            else
+            catch (ArgumentException ex)
             {
-                licenseNumbersToDisplay = s_GarageManager.GetGarageLicensesNumbersByFilter();
+                Console.WriteLine(ex.Message);
+            }
+            catch (ValueOutOfRangeException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void changeVehicleStatus()
+        {
+            string licenseNumber = getLicenseNumber();
+            StringBuilder message = new StringBuilder();
+            message.AppendLine($"Please select the vehicles new status:{Environment.NewLine}");
+            int index = 1;
+            foreach (string status in Enum.GetNames(typeof(eVehicleStatus)))
+            {
+                message.AppendLine($"{index++}. {status}");
             }
 
-            if (licenseNumbersToDisplay.Count > 0)
+            Console.Clear();
+            Console.WriteLine(message);
+            int minEnumValue = Enum.GetValues(typeof(eVehicleStatus)).Cast<int>().Min();
+            int maxEnumValue = Enum.GetValues(typeof(eVehicleStatus)).Cast<int>().Max();
+            int selectedstatus = getIntInput(message, minEnumValue, maxEnumValue);
+            bool isLicenseExist = s_GarageManager.ChangeStatusOfVehicle(licenseNumber, (eVehicleStatus)selectedstatus);
+            if (!isLicenseExist)
             {
-                foreach(string licenseNumber in licenseNumbersToDisplay)
-                {
-                    Console.WriteLine(licenseNumber);
-                }
+                Console.WriteLine("No license number found.");
             }
             else
             {
-                Console.WriteLine("No license number found that match ypur filter");
+                Console.WriteLine($"Your vehicle status has been updated to {(eVehicleStatus)selectedstatus} status.");
             }
+        }
+
+        private string getLicenseNumber()
+        {
+            const string k_LicenseNumberQuestion = "Please enter your vehicles license number:";
+            string licenseNumber = string.Empty;
+            bool isLicenseNumberExist = false;
+            while(!isLicenseNumberExist)
+            {
+                licenseNumber = getStringInput(k_LicenseNumberQuestion);
+                s_GarageManager.IsLicenseNumberExist(licenseNumber, out isLicenseNumberExist);
+            }
+
+            return licenseNumber;
         }
 
         private List<string> displayLicensesInGarage()
@@ -112,19 +184,27 @@ namespace ConsoleUI
             StringBuilder message = new StringBuilder();
             message.AppendLine($"Please select the status you want to filter by:{Environment.NewLine}");
             int index = 1;
-            foreach (string status in Enum.GetValues(typeof(eVehicleStatus)))
+            foreach (string status in Enum.GetNames(typeof(eVehicleStatus)))
             {
                 message.AppendLine($"{index++}. {status}");
             }
+
             message.AppendLine($"{index}. Dont filter by status");
-            int selectedFilter = getIntInput(message, 1, 4);
-            if(selectedFilter != 4)
+            int minEnumValue = Enum.GetValues(typeof(eVehicleStatus)).Cast<int>().Min();
+            int maxEnumValue = Enum.GetValues(typeof(eVehicleStatus)).Cast<int>().Max();
+            int selectedFilter = getIntInput(message, minEnumValue, maxEnumValue + 1);
+            if (selectedFilter != maxEnumValue + 1)
             {
                 licenseNumbersResult = s_GarageManager.GetGarageLicensesNumbersByFilter((eVehicleStatus)selectedFilter);
             }
             else
             {
                 licenseNumbersResult = s_GarageManager.GetGarageLicensesNumbersByFilter();
+            }
+
+            foreach (string licenseNumber in licenseNumbersResult)
+            {
+                Console.WriteLine(licenseNumber);
             }
 
             return licenseNumbersResult;
@@ -138,6 +218,7 @@ namespace ConsoleUI
 
             if (isLicenseNumberExist)
             {
+                s_GarageManager.ChangeStatusOfVehicle(licenseNumber, eVehicleStatus.InRepair);
                 Console.WriteLine("The vehicle is already in the garage. Your vehicle status has benn updated to \"In Repair\"");
             }
             else
@@ -196,7 +277,7 @@ namespace ConsoleUI
             catch
             {
                 // todo
-                    //Console.WriteLine($"Please enter a valid number from {i_MinValue} to {i_MaxValue}");
+                // Console.WriteLine($"Please enter a valid number from {i_MinValue} to {i_MaxValue}");
             }
         }
 
@@ -213,7 +294,7 @@ namespace ConsoleUI
 
                     if (isFloat)
                     {
-                        //s_GarageManager.SetCurrentEnergyStatus(s_VehicleCardModel.Vehicle.Wheels, airPressure);
+                        // s_GarageManager.SetCurrentEnergyStatus(s_VehicleCardModel.Vehicle.Wheels, airPressure);
                         break;
                     }
                 }
@@ -221,7 +302,7 @@ namespace ConsoleUI
             catch
             {
                 // todo
-                //Console.WriteLine($"Please enter a valid number from {i_MinValue} to {i_MaxValue}");
+                // Console.WriteLine($"Please enter a valid number from {i_MinValue} to {i_MaxValue}");
             }
         }
 
@@ -240,7 +321,6 @@ namespace ConsoleUI
             s_VehicleCardModel.VehicleType = (eVehicleType)selectedValue;
             s_GarageManager.CreateVehicle(s_VehicleCardModel);
         }
-
 
         private void getWheelsProducer()
         {
@@ -290,6 +370,7 @@ namespace ConsoleUI
 
             return userAnswer;
         }
+
         private int getIntInput(StringBuilder i_Message, int i_MinValue, int i_MaxValue)
         {
             bool v_IsNotValid = true;
@@ -305,6 +386,26 @@ namespace ConsoleUI
                 }
 
                 Console.WriteLine($"Please enter a valid number from {i_MinValue} to {i_MaxValue}");
+            }
+
+            return selectedValue;
+        }
+
+        private float getFloatInput(StringBuilder i_Message)
+        {
+            float selectedValue = 0f;
+            bool v_IsNotValid = true;
+            Console.WriteLine(i_Message);
+            while (v_IsNotValid)
+            {
+                bool isFloat = float.TryParse(Console.ReadLine(), out selectedValue);
+
+                if (isFloat)
+                {
+                    break;
+                }
+
+                Console.WriteLine($"Please enter a valid float number.");
             }
 
             return selectedValue;

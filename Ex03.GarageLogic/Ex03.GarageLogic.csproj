@@ -45,14 +45,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Car.cs" />
-    <Compile Include="eEnergyType.cs" />
-    <Compile Include="eFuelType.cs" />
-    <Compile Include="eVehicleType.cs" />
+    <Compile Include="Enums\eEnergyType.cs" />
+    <Compile Include="Enums\eFuelType.cs" />
+    <Compile Include="Enums\eVehicleType.cs" />
     <Compile Include="Exceptions\ValueOutOfRangeException.cs" />
     <Compile Include="VehicleCard.cs" />
     <Compile Include="ElectricBattery.cs" />
     <Compile Include="EnergySource.cs" />
-    <Compile Include="eVehicleStatus.cs" />
+    <Compile Include="Enums\eVehicleStatus.cs" />
     <Compile Include="GarageManager.cs" />
     <Compile Include="Motorcycle.cs" />
     <Compile Include="FuelTank.cs" />
@@ -63,8 +63,7 @@
     <Compile Include="Wheel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\..\.NET\A23 Ex01\packages\StyleCop.Analyzers.Unstable.1.2.0.435\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-    <Analyzer Include="..\packages\StyleCop.Analyzers.Unstable.1.2.0.435\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.Unstable.1.2.0.435\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

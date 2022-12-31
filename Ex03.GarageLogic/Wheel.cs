@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ex03.GarageLogic.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,8 @@ namespace Ex03.GarageLogic
                 }
                 else
                 {
-                    throw new Exception(); // todo
+                    string errorMessage = $"Error! You Cant inflate your wheels more then the max air pressure ({r_MaxAirPressure})";
+                    throw new ValueOutOfRangeException(errorMessage, new Exception(), 0, r_MaxAirPressure);
                 }
             }
         }

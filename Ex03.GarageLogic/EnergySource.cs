@@ -1,6 +1,5 @@
 ﻿using System;
 using Ex03.GarageLogic.Exceptions;
-using static Ex03.GarageLogic.FuelTank;
 
 namespace Ex03.GarageLogic
 {
