@@ -12,7 +12,7 @@ namespace Ex03.GarageLogic
     {
         public override void AddEnergy(float i_EnergyQuantity, eFuelType? i_FuelType = null)
         {
-            CurrentEnergy = CurrentEnergy;
+            CurrentEnergy = CurrentEnergy + i_EnergyQuantity;
         }
 
         public ElectricBattery(float i_MaxBatteryTimeInHours)

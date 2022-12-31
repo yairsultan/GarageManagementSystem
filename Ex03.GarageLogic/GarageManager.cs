@@ -102,41 +102,32 @@ namespace Ex03.GarageLogic
             return isInflate;
         }
 
-        public bool FuelUpGasolineVehicle(string i_LicenseNumber, eFuelType i_FuelType, float i_FuelQuantity)
+        public void FuelUpGasolineVehicle(string i_LicenseNumber, eFuelType i_FuelType, float i_FuelQuantity)
         {
-            bool isFueledUp = false;
             if (s_VehiclesCards.ContainsKey(i_LicenseNumber))
             {
                 EnergySource tank = s_VehiclesCards[i_LicenseNumber].Vehicle.EnergySource;
                 if (tank is ElectricBattery)
                 {
-                    throw new ArgumentException("Error! The Vehicle Is Electric! Please Enter Again license number Of A Regular Car.");
+                    throw new ArgumentException("Error! The Vehicle Is Electric! The service was not completed.");
                 }
 
                 tank.AddEnergy(i_FuelQuantity, i_FuelType);
-                isFueledUp = true;
             }
-
-            return isFueledUp;
         }
 
-        public bool ChargeElecticVehicle(string i_LicenseNumber, float i_FuelQuantity)
+        public void ChargeElecticVehicle(string i_LicenseNumber, float i_FuelQuantity)
         {
-            bool isCharged = false;
-
             if (s_VehiclesCards.ContainsKey(i_LicenseNumber))
             {
                 EnergySource battery = s_VehiclesCards[i_LicenseNumber].Vehicle.EnergySource;
                 if (battery is FuelTank)
                 {
-                    throw new ArgumentException("Error! The Vehicle Is Regular! Please Enter Again license number Of A Electric Car.");
+                    throw new ArgumentException("Error! The Vehicle Is Not Electric! The service was not completed");
                 }
 
                 battery.AddEnergy(i_FuelQuantity, null);
-                isCharged = true;
             }
-
-            return isCharged;
         }
 
         public List<Tuple<string, object>> GetVehicleInfo(string i_LicenseNumber)
@@ -150,12 +141,11 @@ namespace Ex03.GarageLogic
                 vehicleInfo.Add(new Tuple<string, object>("Vehicle Status:", vehicleCard.VehicleStatus));
                 vehicleInfo.Add(new Tuple<string, object>("Model Name:", vehicleCard.Vehicle.ModelName));
                 vehicleInfo.Add(new Tuple<string, object>("License Number:", vehicleCard.Vehicle.LicenseNumber));
-                vehicleInfo.Add(new Tuple<string, object>("License Number:", vehicleCard.Vehicle.LicenseNumber));
                 int wheelNumber = 0;
 
                 foreach (Wheel wheel in vehicleCard.Vehicle.Wheels)
                 {
-                    string message = $"Wheel number {wheelNumber}: Producer Name: {wheel.ProducerName}, Current Air Pressure: {wheel.CurrentAirPressure}.";
+                    string message = $"Wheel number {wheelNumber + 1}: Producer Name: {wheel.ProducerName}, Current Air Pressure: {wheel.CurrentAirPressure}.";
                     vehicleInfo.Add(new Tuple<string, object>(message, null));
                     wheelNumber += 1;
                 }
@@ -177,6 +167,11 @@ namespace Ex03.GarageLogic
             }
 
             return vehicleInfo;
+        }
+
+        public void SetCurrentEnergyStatus(Vehicle i_Vehicle, float i_AirPressure)
+        {
+            i_Vehicle.EnergySource.CurrentEnergy = i_AirPressure;
         }
     }
 }

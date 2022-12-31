@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Ex03.GarageLogic.Exceptions;
 
 namespace Ex03.GarageLogic
 {
@@ -49,36 +48,51 @@ namespace Ex03.GarageLogic
 
         private void validateHazardousMaterials(string i_HazardousMaterials)
         {
-            bool isbool = bool.TryParse(i_HazardousMaterials, out bool isHazardousMaterials);
-            if (isbool)
+            bool isNumber = int.TryParse(i_HazardousMaterials, out int isHazardousMaterials);
+            if (isNumber)
             {
-                m_IsTransportingHazardousMaterials = isHazardousMaterials;
+                if (isHazardousMaterials >= 1 && isHazardousMaterials <= 2)
+                {
+                    m_IsTransportingHazardousMaterials = isHazardousMaterials == 1;
+                }
+                else
+                {
+                    string errorMessage = $"Error! You Can Only Slect a Value Between 1 and 2! Please Try Again.";
+                    throw new ValueOutOfRangeException(errorMessage, new Exception(), 1, 2);
+                }
             }
             else
             {
-                // todo
+                throw new FormatException();
             }
         }
 
         private void validateVolumeCharge(string i_VolumeCharge)
         {
             bool isFloat = float.TryParse(i_VolumeCharge, out float volumeChargeFloat);
-            if (isFloat && volumeChargeFloat > 0)
+            if (isFloat)
             {
-                m_MaximumVolumeCharge = volumeChargeFloat;
+                if (volumeChargeFloat > 0)
+                {
+                    m_MaximumVolumeCharge = volumeChargeFloat;
+                }
+                else
+                {
+                    string errorMessage = $"Error! You Can Only Slect a Value Grater then 0! Please Try Again.";
+                    throw new ValueOutOfRangeException(errorMessage, new Exception(), 0, float.MaxValue);
+                }
             }
             else
             {
-                // todo
+                string errorMessage = $"Error! Your input is not in the correct format! Please Try Again.";
+                throw new FormatException(errorMessage);
             }
         }
 
         public override string ToString()
         {
-            string resultMessage = string.Empty;
             string isMovingRefrigeratedCargo = m_IsTransportingHazardousMaterials ? "is" : "is not";
-
-            resultMessage = string.Format(
+            string resultMessage = string.Format(
                 "Truck {1} Transporting Hazardous Materials.{0}Truck Maximum Volume Charge is: {2}.{0}",
                 Environment.NewLine,
                 isMovingRefrigeratedCargo,

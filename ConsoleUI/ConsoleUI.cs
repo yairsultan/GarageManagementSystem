@@ -79,9 +79,50 @@ namespace ConsoleUI
                     fuelUpGasolineVheicle();
                     break;
                 case 6:
+                    chargeElectricVeicle();
                     break;
                 case 7:
+                    displayFullVehicleInformation();
                     break;
+            }
+        }
+
+        private void displayFullVehicleInformation()
+        {
+            string licenseNumber = getLicenseNumber();
+            StringBuilder message = new StringBuilder();
+            List<Tuple<string, object>> vehicleInfo = s_GarageManager.GetVehicleInfo(licenseNumber);
+            foreach (Tuple<string, object> vehicleInfoTuple in vehicleInfo)
+            {
+                message.Append(vehicleInfoTuple.Item1);
+                if (vehicleInfoTuple.Item2 != null)
+                {
+                    message.Append(vehicleInfoTuple.Item2.ToString());
+                }
+
+                message.AppendLine();
+            }
+
+            Console.WriteLine(message);
+        }
+
+        private void chargeElectricVeicle()
+        {
+            string licenseNumber = getLicenseNumber();
+            StringBuilder message = new StringBuilder();
+            message.AppendLine("Please enter the amount of minutes you want to charge:");
+            float chargeMinutes = getFloatInput(message);
+            try
+            {
+                s_GarageManager.ChargeElecticVehicle(licenseNumber, chargeMinutes);
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (ValueOutOfRangeException ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -246,14 +287,34 @@ namespace ConsoleUI
         private void getUniqueProperties()
         {
             List<string> messages = s_VehicleCardModel.Vehicle.GetUniquePropertiesMessage();
-            List<string> propertiesData = new List<string>();
-            messages.ForEach(Console.WriteLine);
-            for (int i = 0; i < messages.Count; i++)
-            {
-                propertiesData.Add(Console.ReadLine());
-            }
+            bool isAllInputsValid = false;
 
-            s_VehicleCardModel.Vehicle.SetUniquePropertiesData(propertiesData);
+            while (!isAllInputsValid)
+            {
+                messages.ForEach(Console.WriteLine);
+                List<string> propertiesData = new List<string>();
+                for (int i = 0; i < messages.Count; i++)
+                {
+                    propertiesData.Add(Console.ReadLine());
+                }
+                try
+                {
+                    s_VehicleCardModel.Vehicle.SetUniquePropertiesData(propertiesData);
+                    isAllInputsValid = true;
+                }
+                catch (ValueOutOfRangeException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    Console.Clear();
+                }
+            }
         }
 
         private void getWheelsAirPressure()
@@ -294,7 +355,7 @@ namespace ConsoleUI
 
                     if (isFloat)
                     {
-                        // s_GarageManager.SetCurrentEnergyStatus(s_VehicleCardModel.Vehicle.Wheels, airPressure);
+                        s_GarageManager.SetCurrentEnergyStatus(s_VehicleCardModel.Vehicle, airPressure);
                         break;
                     }
                 }

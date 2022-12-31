@@ -14,13 +14,15 @@ namespace Ex03.GarageLogic
 
             set
             {
-                if (value < 0 || value + CurrentEnergy > MaxEnergyCapacity)
+                if (value >= 0 && value + m_CurrentEnergy <= r_MaxEnergyCapacity)
                 {
-                    string errorMessage = $"Error! You Can Only Add A Fuel Amount Between 0 and {MaxEnergyCapacity - CurrentEnergy}! Please Try Again.";
-                    throw new ValueOutOfRangeException(errorMessage, new Exception(), 0, MaxEnergyCapacity - CurrentEnergy);
+                    m_CurrentEnergy = value;
                 }
-
-                CurrentEnergy += value;
+                else
+                {
+                    string errorMessage = $"Error! You Can Only Add A Fuel Amount Between 0 and {r_MaxEnergyCapacity - m_CurrentEnergy}! Please Try Again.";
+                    throw new ValueOutOfRangeException(errorMessage, new Exception(), 0, r_MaxEnergyCapacity - m_CurrentEnergy);
+                }
             }
         }
 
