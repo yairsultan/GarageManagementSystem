@@ -20,7 +20,7 @@ namespace Ex03.GarageLogic
         {
             if(r_FuelType != i_FuelType)
             {
-                throw new ArgumentException("Wrong energy type. please enter the correct type", r_FuelType.ToString());
+                throw new ArgumentException($"Wrong energy type. please enter the correct type: {r_FuelType.ToString()}.");
             }
 
             CurrentEnergy = CurrentEnergy + i_EnergyQuantity;

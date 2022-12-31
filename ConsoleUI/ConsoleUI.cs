@@ -56,6 +56,7 @@ namespace ConsoleUI
             message.AppendLine("7. Display full information of a vehicle in the garage");
             message.AppendLine($"Press Q to close the program");
             int selectedService = getIntInput(message, 1, 7);
+            Console.Clear();
             runSelectedService(selectedService);
         }
 
@@ -115,6 +116,7 @@ namespace ConsoleUI
             try
             {
                 s_GarageManager.ChargeElecticVehicle(licenseNumber, chargeMinutes);
+                Console.WriteLine("The vehicle was successfully charged.");
             }
             catch (ArgumentException ex)
             {
@@ -193,6 +195,7 @@ namespace ConsoleUI
             Console.WriteLine(message);
             int minEnumValue = Enum.GetValues(typeof(eVehicleStatus)).Cast<int>().Min();
             int maxEnumValue = Enum.GetValues(typeof(eVehicleStatus)).Cast<int>().Max();
+            message.Clear();
             int selectedstatus = getIntInput(message, minEnumValue, maxEnumValue);
             bool isLicenseExist = s_GarageManager.ChangeStatusOfVehicle(licenseNumber, (eVehicleStatus)selectedstatus);
             if (!isLicenseExist)
@@ -243,6 +246,8 @@ namespace ConsoleUI
                 licenseNumbersResult = s_GarageManager.GetGarageLicensesNumbersByFilter();
             }
 
+            Console.Clear();
+            Console.WriteLine("Licenses Numbers In Garage:");
             foreach (string licenseNumber in licenseNumbersResult)
             {
                 Console.WriteLine(licenseNumber);
@@ -253,6 +258,7 @@ namespace ConsoleUI
 
         private void insertNewVehicle()
         {
+            Console.Clear();
             const string k_LicenseNumberQuestion = "Please enter the vehicle license number:";
             string licenseNumber = getStringInput(k_LicenseNumberQuestion);
             s_GarageManager.IsLicenseNumberExist(licenseNumber, out bool isLicenseNumberExist);
@@ -260,11 +266,12 @@ namespace ConsoleUI
             if (isLicenseNumberExist)
             {
                 s_GarageManager.ChangeStatusOfVehicle(licenseNumber, eVehicleStatus.InRepair);
-                Console.WriteLine("The vehicle is already in the garage. Your vehicle status has benn updated to \"In Repair\"");
+                Console.WriteLine("The vehicle is already in the garage. Your vehicle status has been updated to \"In Repair\"");
             }
             else
             {
                 s_VehicleCardModel.LicenseNumber = licenseNumber;
+                Console.Clear();
                 getVehicleInformation();
             }
         }
@@ -297,6 +304,7 @@ namespace ConsoleUI
                 {
                     propertiesData.Add(Console.ReadLine());
                 }
+
                 try
                 {
                     s_VehicleCardModel.Vehicle.SetUniquePropertiesData(propertiesData);
@@ -347,23 +355,24 @@ namespace ConsoleUI
             try
             {
                 bool v_InvalidEnergyStatus = true;
-                Console.WriteLine("Please enter current energy status:");
-                float airPressure = 0f;
+                Console.WriteLine("Please enter vehicle's current energy:");
+                float currentEnergy = 0f;
                 while (v_InvalidEnergyStatus)
                 {
-                    bool isFloat = float.TryParse(Console.ReadLine(), out airPressure);
+                    bool isFloat = float.TryParse(Console.ReadLine(), out currentEnergy);
 
                     if (isFloat)
                     {
-                        s_GarageManager.SetCurrentEnergyStatus(s_VehicleCardModel.Vehicle, airPressure);
+                        s_GarageManager.SetCurrentEnergyStatus(s_VehicleCardModel.Vehicle, currentEnergy);
                         break;
                     }
                 }
             }
-            catch
+
+            // to do -  need to thing what to do when user enter invalid inputs
+            catch (ValueOutOfRangeException ex)
             {
-                // todo
-                // Console.WriteLine($"Please enter a valid number from {i_MinValue} to {i_MaxValue}");
+               Console.WriteLine($"Please enter a valid number from {ex.MinValue} to {ex.MaxValue}");
             }
         }
 

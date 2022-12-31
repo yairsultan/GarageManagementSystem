@@ -136,16 +136,16 @@ namespace Ex03.GarageLogic
             if (s_VehiclesCards.ContainsKey(i_LicenseNumber))
             {
                 VehicleCard vehicleCard = s_VehiclesCards[i_LicenseNumber];
-                vehicleInfo.Add(new Tuple<string, object>("Owner Name:", vehicleCard.OwnerName));
-                vehicleInfo.Add(new Tuple<string, object>("Owner Phone:", vehicleCard.OwnerPhone));
-                vehicleInfo.Add(new Tuple<string, object>("Vehicle Status:", vehicleCard.VehicleStatus));
-                vehicleInfo.Add(new Tuple<string, object>("Model Name:", vehicleCard.Vehicle.ModelName));
-                vehicleInfo.Add(new Tuple<string, object>("License Number:", vehicleCard.Vehicle.LicenseNumber));
+                vehicleInfo.Add(new Tuple<string, object>("Owner Name: ", vehicleCard.OwnerName));
+                vehicleInfo.Add(new Tuple<string, object>("Owner Phone: ", vehicleCard.OwnerPhone));
+                vehicleInfo.Add(new Tuple<string, object>("Vehicle Status: ", vehicleCard.VehicleStatus));
+                vehicleInfo.Add(new Tuple<string, object>("Model Name: ", vehicleCard.Vehicle.ModelName));
+                vehicleInfo.Add(new Tuple<string, object>("License Number: ", vehicleCard.Vehicle.LicenseNumber));
                 int wheelNumber = 0;
 
                 foreach (Wheel wheel in vehicleCard.Vehicle.Wheels)
                 {
-                    string message = $"Wheel number {wheelNumber + 1}: Producer Name: {wheel.ProducerName}, Current Air Pressure: {wheel.CurrentAirPressure}.";
+                    string message = $"Wheel number {wheelNumber + 1}: Producer Name: {wheel.ProducerName}, Current Air Pressure: {wheel.CurrentAirPressure}, Max Air Pressure: {wheel.MaxAirPressure}.";
                     vehicleInfo.Add(new Tuple<string, object>(message, null));
                     wheelNumber += 1;
                 }
@@ -153,13 +153,13 @@ namespace Ex03.GarageLogic
                 switch(vehicleCard.Vehicle.EnergySource)
                 {
                     case ElectricBattery battery:
-                        vehicleInfo.Add(new Tuple<string, object>("Battery current charge:", battery.CurrentEnergy));
-                        vehicleInfo.Add(new Tuple<string, object>("Battery max charge is:", battery.MaxEnergyCapacity));
+                        vehicleInfo.Add(new Tuple<string, object>("Battery current charge: ", battery.CurrentEnergy));
+                        vehicleInfo.Add(new Tuple<string, object>("Battery max charge is: ", battery.MaxEnergyCapacity));
                         break;
                     case FuelTank tank:
-                        vehicleInfo.Add(new Tuple<string, object>("Fuel type is:", tank.FuelType));
-                        vehicleInfo.Add(new Tuple<string, object>("Fuel current amount is:", tank.CurrentEnergy));
-                        vehicleInfo.Add(new Tuple<string, object>("Fuel maximum amount is:", tank.MaxEnergyCapacity));
+                        vehicleInfo.Add(new Tuple<string, object>("Fuel type is: ", tank.FuelType));
+                        vehicleInfo.Add(new Tuple<string, object>("Fuel current amount is: ", tank.CurrentEnergy));
+                        vehicleInfo.Add(new Tuple<string, object>("Fuel maximum amount is: ", tank.MaxEnergyCapacity));
                         break;
                 }
 
@@ -169,9 +169,9 @@ namespace Ex03.GarageLogic
             return vehicleInfo;
         }
 
-        public void SetCurrentEnergyStatus(Vehicle i_Vehicle, float i_AirPressure)
+        public void SetCurrentEnergyStatus(Vehicle i_Vehicle, float i_CurrentEnergy)
         {
-            i_Vehicle.EnergySource.CurrentEnergy = i_AirPressure;
+            i_Vehicle.EnergySource.CurrentEnergy = i_CurrentEnergy;
         }
     }
 }
