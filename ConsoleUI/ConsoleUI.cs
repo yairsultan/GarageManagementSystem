@@ -151,7 +151,7 @@ namespace ConsoleUI
         {
             string licenseNumber = getLicenseNumber();
             StringBuilder message = new StringBuilder();
-            message.AppendLine($"Please select the fuel tpye:{Environment.NewLine}");
+            message.AppendLine($"Please select the fuel type:{Environment.NewLine}");
             int index = 1;
             foreach (string status in Enum.GetNames(typeof(eFuelType)))
             {
@@ -322,7 +322,7 @@ namespace ConsoleUI
             try
             {
                 bool v_InvalidAirPressure = true;
-                Console.WriteLine("Plesae enter air pressure for all wheels:");
+                Console.WriteLine("Please enter air pressure for all wheels:");
                 float airPressure = 0f;
                 while (v_InvalidAirPressure)
                 {
@@ -347,7 +347,7 @@ namespace ConsoleUI
             try
             {
                 bool v_InvalidEnergyStatus = true;
-                Console.WriteLine("Plesae enter current energy status:");
+                Console.WriteLine("Please enter current energy status:");
                 float airPressure = 0f;
                 while (v_InvalidEnergyStatus)
                 {
