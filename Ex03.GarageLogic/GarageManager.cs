@@ -159,10 +159,12 @@ namespace Ex03.GarageLogic
                 switch(vehicleCard.Vehicle.EnergySource)
                 {
                     case ElectricBattery battery:
+                        vehicleInfo.Add(new Tuple<string, object>("This Vehicle is Electric.", null));
                         vehicleInfo.Add(new Tuple<string, object>("Battery current charge: ", battery.CurrentEnergy));
                         vehicleInfo.Add(new Tuple<string, object>("Battery max charge is: ", battery.MaxEnergyCapacity));
                         break;
                     case FuelTank tank:
+                        vehicleInfo.Add(new Tuple<string, object>("This Vehicle is Regular.", null));
                         vehicleInfo.Add(new Tuple<string, object>("Fuel type is: ", tank.FuelType));
                         vehicleInfo.Add(new Tuple<string, object>("Fuel current amount is: ", tank.CurrentEnergy));
                         vehicleInfo.Add(new Tuple<string, object>("Fuel maximum amount is: ", tank.MaxEnergyCapacity));
