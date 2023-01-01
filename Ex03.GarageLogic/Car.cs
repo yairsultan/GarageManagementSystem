@@ -37,11 +37,6 @@ namespace Ex03.GarageLogic
             get { return m_NumberOfDoors; }
         }
 
-        public Car(string i_LicenseNumber)
-            : base(i_LicenseNumber)
-        {
-        }
-
         public Car(List<Wheel> i_Wheels, EnergySource i_EnergySource, string i_ModelName, string i_LicenseNumber)
             : base(i_Wheels, i_EnergySource, i_ModelName, i_LicenseNumber)
         {

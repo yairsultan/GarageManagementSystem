@@ -45,7 +45,7 @@ namespace Ex03.GarageLogic
             message.AppendLine("4. B" + Environment.NewLine);
             messagesList.Add(message.ToString());
             message.Clear();
-            message.AppendLine("Plesae select engine volume:");
+            message.AppendLine("Please select engine volume:");
             messagesList.Add(message.ToString());
 
             return messagesList;

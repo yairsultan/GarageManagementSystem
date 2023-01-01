@@ -47,25 +47,9 @@ namespace Ex03.GarageLogic
             r_ProducerName = i_ProducerName;
         }
 
-        public bool Inflate(float i_AirToAdd)
+        public void Inflate(float i_AirToAdd)
         {
-            try
-            {
-                bool isPossible = false;
-                CurrentAirPressure += i_AirToAdd;
-                isPossible = true;
-
-                return isPossible;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public void InflateToMax()
-        {
-            Inflate(r_MaxAirPressure - m_CurrentAirPressure);
+            CurrentAirPressure += i_AirToAdd;
         }
     }
 }

@@ -16,6 +16,12 @@ namespace Ex03.GarageLogic
             get { return r_FuelType; }
         }
 
+        public FuelTank(eFuelType i_FuelType, float i_MaxAmountFuelInLiters)
+            : base(i_MaxAmountFuelInLiters)
+        {
+            r_FuelType = i_FuelType;
+        }
+
         public override void AddEnergy(float i_EnergyQuantity, eFuelType? i_FuelType = null)
         {
             if(r_FuelType != i_FuelType)
@@ -32,12 +38,6 @@ namespace Ex03.GarageLogic
                 string errorMessage = $"Error! You Can't Add Negative Amount Of Fuel! The Service Was Not Completed.";
                 throw new ValueOutOfRangeException(errorMessage, new Exception(), 0, MaxEnergyCapacity - CurrentEnergy);
             }
-        }
-
-        public FuelTank(eFuelType i_FuelType, float i_MaxAmountFuelInLiters)
-            : base(i_MaxAmountFuelInLiters)
-        {
-            r_FuelType = i_FuelType;
         }
     }
 }

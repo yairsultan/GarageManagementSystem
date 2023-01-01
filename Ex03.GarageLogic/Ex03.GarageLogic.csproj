@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Car.cs" />
-    <Compile Include="Enums\eEnergyType.cs" />
     <Compile Include="Enums\eFuelType.cs" />
     <Compile Include="Enums\eVehicleType.cs" />
     <Compile Include="Exceptions\ValueOutOfRangeException.cs" />

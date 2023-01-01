@@ -9,18 +9,18 @@ namespace Ex03.GarageLogic
     public abstract class Vehicle
     {
         private readonly string r_LicenseNumber;
-        private string m_ModelName;
-        private List<Wheel> m_Wheels;
-        private EnergySource m_EnergySource;
+        private readonly string r_ModelName;
+        private readonly EnergySource r_EnergySource;
+        private readonly List<Wheel> r_Wheels;
 
         public List<Wheel> Wheels
         {
-            get { return m_Wheels; }
+            get { return r_Wheels; }
         }
 
         public EnergySource EnergySource
         {
-            get { return m_EnergySource; }
+            get { return r_EnergySource; }
         }
 
         public string LicenseNumber
@@ -30,7 +30,7 @@ namespace Ex03.GarageLogic
 
         public string ModelName
         {
-            get { return m_ModelName; }
+            get { return r_ModelName; }
         }
 
         public Vehicle(string i_LicenseNumber)
@@ -40,9 +40,9 @@ namespace Ex03.GarageLogic
 
         public Vehicle(List<Wheel> i_Wheels, EnergySource i_EnergySource, string i_ModelName, string i_LicenseNumber)
         {
-            m_Wheels = i_Wheels;
-            m_EnergySource = i_EnergySource;
-            m_ModelName = i_ModelName;
+            r_Wheels = i_Wheels;
+            r_EnergySource = i_EnergySource;
+            r_ModelName = i_ModelName;
             r_LicenseNumber = i_LicenseNumber;
         }
 

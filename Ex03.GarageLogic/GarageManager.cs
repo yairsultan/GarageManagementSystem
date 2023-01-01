@@ -8,7 +8,7 @@ namespace Ex03.GarageLogic
 {
     public class GarageManager
     {
-        public static Dictionary<string, VehicleCard> s_VehiclesCards;
+        private static Dictionary<string, VehicleCard> s_VehiclesCards;
 
         public GarageManager()
         {
@@ -41,17 +41,17 @@ namespace Ex03.GarageLogic
             VehicleFactory.CreateVehicle(i_VehicleCardModel);
         }
 
-        public void SetAirPressureForAllWheels(List<Wheel> i_Wheels, float airPressure)
+        public void SetAirPressureForAllWheels(List<Wheel> i_Wheels, float i_AirPressure)
         {
             foreach (Wheel wheel in i_Wheels)
             {
-                wheel.CurrentAirPressure = airPressure;
+                wheel.CurrentAirPressure = i_AirPressure;
             }
         }
 
-        public void AddVehicleToGarage(VehicleCardModel vehicle)
+        public void AddVehicleToGarage(VehicleCardModel i_VehicleModel)
         {
-            VehicleCard vehicleCard = new VehicleCard(vehicle);
+            VehicleCard vehicleCard = new VehicleCard(i_VehicleModel.Vehicle, i_VehicleModel.OwnerName, i_VehicleModel.OwnerPhoneNumber);
             s_VehiclesCards.Add(vehicleCard.Vehicle.LicenseNumber, vehicleCard);
         }
 
@@ -89,13 +89,13 @@ namespace Ex03.GarageLogic
 
         public bool InflateVehicleWheelsToMaximum(string i_LicenseNumber)
         {
-            bool isInflate = false;
+            bool isInflate;
             if (s_VehiclesCards.ContainsKey(i_LicenseNumber))
             {
                 List<Wheel> vehicleWheels = s_VehiclesCards[i_LicenseNumber]?.Vehicle?.Wheels;
                 foreach (Wheel wheel in vehicleWheels)
                 {
-                    wheel.InflateToMax();
+                    wheel.Inflate(wheel.MaxAirPressure - wheel.CurrentAirPressure);
                 }
 
                 isInflate = true;
@@ -201,7 +201,7 @@ namespace Ex03.GarageLogic
                         vehicleInfo.Add(new Tuple<string, object>("Fuel type is: ", tank.FuelType));
                         vehicleInfo.Add(new Tuple<string, object>("Fuel maximum amount is: ", tank.MaxEnergyCapacity));
                         vehicleInfo.Add(new Tuple<string, object>("Fuel current amount is: ", tank.CurrentEnergy));
-                        vehicleInfo.Add(new Tuple<string, object>("Fuel current precentage: ", tank.CurrentEnergyPercentage));
+                        vehicleInfo.Add(new Tuple<string, object>("Fuel current precentage: ", $"{tank.CurrentEnergyPercentage * 100:n2}%"));
                         break;
                 }
 

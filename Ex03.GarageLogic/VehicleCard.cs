@@ -1,41 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Ex03.GarageLogic.Car;
-using static Ex03.GarageLogic.VehicleFactory;
-
-namespace Ex03.GarageLogic
+﻿namespace Ex03.GarageLogic
 {
     public class VehicleCard
     {
-        private string m_OwnerName;
-        private string m_OwnerPhoneNumber;
+        private readonly Vehicle r_Vehicle;
+        private readonly string r_OwnerName;
+        private readonly string r_OwnerPhoneNumber;
         private eVehicleStatus m_VehicleStatus;
-        private Vehicle m_Vehicle;
 
-        public VehicleCard()
+        public VehicleCard(Vehicle i_Vehicle, string i_OwnerName, string i_OwnerPhoneNumber)
         {
-        }
-
-        public VehicleCard(VehicleCardModel i_Vehicle)
-        {
-            m_OwnerName = i_Vehicle.OwnerName;
-            m_OwnerPhoneNumber = i_Vehicle.OwnerPhoneNumber;
+            r_Vehicle = i_Vehicle;
+            r_OwnerName = i_OwnerName;
+            r_OwnerPhoneNumber = i_OwnerPhoneNumber;
             m_VehicleStatus = eVehicleStatus.InRepair;
-            m_Vehicle = i_Vehicle.Vehicle;
         }
 
         public string OwnerName
         {
-            get { return m_OwnerName; }
-            set { }
+            get { return r_OwnerName; }
         }
 
         public string OwnerPhone
         {
-            get { return m_OwnerPhoneNumber; }
+            get { return r_OwnerPhoneNumber; }
         }
 
         public eVehicleStatus VehicleStatus
@@ -46,8 +33,7 @@ namespace Ex03.GarageLogic
 
         public Vehicle Vehicle
         {
-            get { return m_Vehicle; }
-            set { m_Vehicle = value; }
+            get { return r_Vehicle; }
         }
     }
 }

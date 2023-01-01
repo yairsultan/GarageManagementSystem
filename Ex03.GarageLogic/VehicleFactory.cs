@@ -60,7 +60,7 @@ namespace Ex03.GarageLogic
                     i_VehicleCardModel.Vehicle = new Car(wheels, energySource, i_VehicleCardModel.ModelName, i_VehicleCardModel.LicenseNumber);
                     break;
                 case eVehicleType.Truck:
-                    maxEnergyQuantity = 4.7f;
+                    maxEnergyQuantity = 120f;
                     energySource = new FuelTank(eFuelType.Soler, maxEnergyQuantity);
                     i_VehicleCardModel.Vehicle = new Truck(wheels, energySource, i_VehicleCardModel.ModelName, i_VehicleCardModel.LicenseNumber);
                     break;

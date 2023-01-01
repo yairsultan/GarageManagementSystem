@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Ex03.GarageLogic;
 using Ex03.GarageLogic.Exceptions;
 
-namespace ConsoleUI
+namespace Ex03.ConsoleUI
 {
-    public class ConsoleUI
+    public class ConsoleUIManager
     {
         private static GarageManager s_GarageManager;
         private static VehicleCardModel s_VehicleCardModel;
@@ -282,7 +280,7 @@ namespace ConsoleUI
                 message.AppendLine($"{index++}. {status}");
             }
 
-            message.AppendLine($"{index}. Dont filter by status"); 
+            message.AppendLine($"{index}. Dont filter by status");
             GarageManager.GetEnumMinMax<eVehicleStatus>(out int minEnumValue, out int maxEnumValue);
             int selectedFilter = getIntInput(message, minEnumValue, maxEnumValue + 1);
             if (selectedFilter != maxEnumValue + 1)

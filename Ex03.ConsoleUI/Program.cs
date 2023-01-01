@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleUI
+namespace Ex03.ConsoleUI
 {
     public class Program
     {
         public static void Main()
         {
-            ConsoleUI consoleUIManager = new ConsoleUI();
+            ConsoleUIManager consoleUIManager = new ConsoleUIManager();
             consoleUIManager.Run();
         }
     }
