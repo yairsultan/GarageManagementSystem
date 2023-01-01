@@ -92,19 +92,34 @@ namespace ConsoleUI
         {
             string licenseNumber = getLicenseNumber();
             StringBuilder message = new StringBuilder();
-            List<Tuple<string, object>> vehicleInfo = s_GarageManager.GetVehicleInfo(licenseNumber);
-            foreach (Tuple<string, object> vehicleInfoTuple in vehicleInfo)
+            try
             {
-                message.Append(vehicleInfoTuple.Item1);
-                if (vehicleInfoTuple.Item2 != null)
+                List<Tuple<string, object>> vehicleInfo = s_GarageManager.GetVehicleInfo(licenseNumber);
+                foreach (Tuple<string, object> vehicleInfoTuple in vehicleInfo)
                 {
-                    message.Append(vehicleInfoTuple.Item2.ToString());
+                    message.Append(vehicleInfoTuple.Item1);
+                    if (vehicleInfoTuple.Item2 != null)
+                    {
+                        message.Append(vehicleInfoTuple.Item2.ToString());
+                    }
+
+                    message.AppendLine();
                 }
 
-                message.AppendLine();
+                Console.WriteLine(message);
             }
-
-            Console.WriteLine(message);
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine(ex.InnerException.Message);
+                }
+            }
         }
 
         private void chargeElectricVeicle()
@@ -112,9 +127,10 @@ namespace ConsoleUI
             string licenseNumber = getLicenseNumber();
             StringBuilder message = new StringBuilder();
             message.AppendLine("Please enter the amount of minutes you want to charge:");
-            float chargeMinutes = getFloatInput(message);
             try
             {
+                int maxChargingMinutes = s_GarageManager.GetMaxChargingMinutes(licenseNumber);
+                int chargeMinutes = getIntInput(message, 0, maxChargingMinutes);
                 s_GarageManager.ChargeElecticVehicle(licenseNumber, chargeMinutes);
                 Console.WriteLine("The vehicle was successfully charged.");
             }
@@ -125,6 +141,14 @@ namespace ConsoleUI
             catch (ValueOutOfRangeException ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine(ex.InnerException.Message);
+                }
             }
         }
 
@@ -143,9 +167,21 @@ namespace ConsoleUI
                     Console.WriteLine("All of your wheels are inflated to their max.");
                 }
             }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             catch (ValueOutOfRangeException ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine(ex.InnerException.Message);
+                }
             }
         }
 
@@ -176,6 +212,14 @@ namespace ConsoleUI
             catch (ValueOutOfRangeException ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine(ex.InnerException.Message);
+                }
             }
         }
 
@@ -331,6 +375,14 @@ namespace ConsoleUI
                     Console.Clear();
                     Console.WriteLine(ex.Message);
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    if (ex.InnerException != null)
+                    {
+                        Console.WriteLine(ex.InnerException.Message);
+                    }
+                }
             }
 
             Console.Clear();
@@ -353,6 +405,14 @@ namespace ConsoleUI
                     catch (ValueOutOfRangeException ex)
                     {
                         Console.WriteLine(ex.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        if (ex.InnerException != null)
+                        {
+                            Console.WriteLine(ex.InnerException.Message);
+                        }
                     }
                 }
                 else
@@ -381,6 +441,14 @@ namespace ConsoleUI
                     catch (ValueOutOfRangeException ex)
                     {
                         Console.WriteLine($"Please enter a valid number from {ex.MinValue} to {ex.MaxValue}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        if (ex.InnerException != null)
+                        {
+                            Console.WriteLine(ex.InnerException.Message);
+                        }
                     }
                 }
                 else

@@ -100,6 +100,10 @@ namespace Ex03.GarageLogic
 
                 isInflate = true;
             }
+            else
+            {
+                throw new ArgumentException($"Error! The License Number You Entered ({i_LicenseNumber}) Doesn't Exist! The service was not completed.");
+            }
 
             return isInflate;
         }
@@ -122,7 +126,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void ChargeElecticVehicle(string i_LicenseNumber, float i_FuelQuantity)
+        public void ChargeElecticVehicle(string i_LicenseNumber, int i_MinutesToCharge)
         {
             if (s_VehiclesCards.ContainsKey(i_LicenseNumber))
             {
@@ -132,8 +136,36 @@ namespace Ex03.GarageLogic
                     throw new ArgumentException("Error! The Vehicle Is Not Electric! The service was not completed");
                 }
 
-                battery.AddEnergy(i_FuelQuantity, null);
+                float hoursToCharge = i_MinutesToCharge / 60;
+                battery.AddEnergy(hoursToCharge, null);
             }
+            else
+            {
+                throw new ArgumentException($"Error! The License Number You Entered ({i_LicenseNumber}) Doesn't Exist! The service was not completed.");
+            }
+        }
+
+        public int GetMaxChargingMinutes(string i_LicenseNumber)
+        {
+            int maxChargingMinutes;
+            if (s_VehiclesCards.ContainsKey(i_LicenseNumber))
+            {
+                ElectricBattery electricBattery = s_VehiclesCards[i_LicenseNumber].Vehicle.EnergySource as ElectricBattery;
+                if (electricBattery != null)
+                {
+                    maxChargingMinutes = (int)Math.Ceiling((electricBattery.MaxEnergyCapacity - electricBattery.CurrentEnergy) * 60);
+                }
+                else
+                {
+                    throw new ArgumentException("Error! The Vehicle Is Not Electric! The service was not completed");
+                }
+            }
+            else
+            {
+                throw new ArgumentException($"Error! The License Number You Entered ({i_LicenseNumber}) Doesn't Exist! The service was not completed.");
+            }
+
+            return maxChargingMinutes;
         }
 
         public List<Tuple<string, object>> GetVehicleInfo(string i_LicenseNumber)
@@ -160,18 +192,24 @@ namespace Ex03.GarageLogic
                 {
                     case ElectricBattery battery:
                         vehicleInfo.Add(new Tuple<string, object>("This Vehicle is Electric.", null));
-                        vehicleInfo.Add(new Tuple<string, object>("Battery current charge: ", battery.CurrentEnergy));
                         vehicleInfo.Add(new Tuple<string, object>("Battery max charge is: ", battery.MaxEnergyCapacity));
+                        vehicleInfo.Add(new Tuple<string, object>("Battery current charge: ", battery.CurrentEnergy));
+                        vehicleInfo.Add(new Tuple<string, object>("Battery current percentage: ", battery.CurrentEnergyPercentage));
                         break;
                     case FuelTank tank:
                         vehicleInfo.Add(new Tuple<string, object>("This Vehicle is Regular.", null));
                         vehicleInfo.Add(new Tuple<string, object>("Fuel type is: ", tank.FuelType));
-                        vehicleInfo.Add(new Tuple<string, object>("Fuel current amount is: ", tank.CurrentEnergy));
                         vehicleInfo.Add(new Tuple<string, object>("Fuel maximum amount is: ", tank.MaxEnergyCapacity));
+                        vehicleInfo.Add(new Tuple<string, object>("Fuel current amount is: ", tank.CurrentEnergy));
+                        vehicleInfo.Add(new Tuple<string, object>("Fuel current precentage: ", tank.CurrentEnergyPercentage));
                         break;
                 }
 
                 vehicleInfo.Add(new Tuple<string, object>(vehicleCard.Vehicle.ToString(), null));
+            }
+            else
+            {
+                throw new ArgumentException($"Error! The License Number You Entered ({i_LicenseNumber}) Doesn't Exist! The service was not completed.");
             }
 
             return vehicleInfo;

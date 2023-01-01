@@ -7,6 +7,12 @@ namespace Ex03.GarageLogic
     {
         private readonly float r_MaxEnergyCapacity;
         private float m_CurrentEnergy;
+        private float m_CurrentEnergyPercentage;
+
+        public float CurrentEnergyPercentage
+        {
+            get { return m_CurrentEnergyPercentage; }
+        }
 
         public float CurrentEnergy
         {
@@ -17,6 +23,7 @@ namespace Ex03.GarageLogic
                 if (value >= 0 && value <= r_MaxEnergyCapacity)
                 {
                     m_CurrentEnergy = value;
+                    m_CurrentEnergyPercentage = m_CurrentEnergy / r_MaxEnergyCapacity;
                 }
                 else
                 {
