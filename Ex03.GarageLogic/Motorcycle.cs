@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Ex03.GarageLogic.Exceptions;
 
 namespace Ex03.GarageLogic
 {
@@ -60,28 +60,45 @@ namespace Ex03.GarageLogic
         private void validateEngineVolume(string i_EngineVolume)
         {
             bool isNumber = int.TryParse(i_EngineVolume, out int engineVolumeNum);
-            if (isNumber && engineVolumeNum > 0)
+            if (isNumber)
             {
-                m_EngineVolume = engineVolumeNum;
+                if (engineVolumeNum > 0)
+                {
+                    m_EngineVolume = engineVolumeNum;
+                }
+                else
+                {
+                    string errorMessage = $"Engine Volume Error! You Can Only Slect a Value grater then 0! Please Try Again.{Environment.NewLine}";
+                    throw new ValueOutOfRangeException(errorMessage, new Exception(), 0, int.MaxValue);
+                }
             }
             else
             {
-                // todo
+                string errorMessage = $"Engine Volume Error! Your input is not in the correct format! Please Try Again.{Environment.NewLine}";
+                throw new FormatException(errorMessage);
             }
         }
 
         private void validateLicenseType(string i_LicenseType)
         {
             bool isNumber = int.TryParse(i_LicenseType, out int licenseType);
-            int minEnumValue = Enum.GetValues(typeof(eMotorcycleLicenseType)).Cast<int>().Min();
-            int maxEnumValue = Enum.GetValues(typeof(eMotorcycleLicenseType)).Cast<int>().Max();
-            if (isNumber && licenseType >= minEnumValue && licenseType <= maxEnumValue)
+            GarageManager.GetEnumMinMax<eMotorcycleLicenseType>(out int minEnumValue, out int maxEnumValue);
+            if (isNumber)
             {
-                m_LicenseType = (eMotorcycleLicenseType)licenseType;
+                if (licenseType >= minEnumValue && licenseType <= maxEnumValue)
+                {
+                    m_LicenseType = (eMotorcycleLicenseType)licenseType;
+                }
+                else
+                {
+                    string errorMessage = $"License Type Error! You Can Only Slect a Value between {minEnumValue} and {maxEnumValue}! Please Try Again.{Environment.NewLine}";
+                    throw new ValueOutOfRangeException(errorMessage, new Exception(), minEnumValue, maxEnumValue);
+                }
             }
             else
             {
-                // todo
+                string errorMessage = $"License Type Error! Your input is not in the correct format! Please Try Again.{Environment.NewLine}";
+                throw new FormatException(errorMessage);
             }
         }
 

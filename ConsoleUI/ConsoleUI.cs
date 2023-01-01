@@ -34,7 +34,7 @@ namespace ConsoleUI
         {
             bool isGarageRunning = false;
             const string k_ReturnToMenuQuestion = "Please enter 'Q' to quit or any other key to return back to select service";
-            string selection = getStringInput(k_ReturnToMenuQuestion);
+            string selection = getStringInput(Environment.NewLine + k_ReturnToMenuQuestion);
             if (selection != "Q")
             {
                 isGarageRunning = true;
@@ -160,8 +160,7 @@ namespace ConsoleUI
                 message.AppendLine($"{index++}. {status}");
             }
 
-            int minEnumValue = Enum.GetValues(typeof(eFuelType)).Cast<int>().Min();
-            int maxEnumValue = Enum.GetValues(typeof(eFuelType)).Cast<int>().Max();
+            GarageManager.GetEnumMinMax<eFuelType>(out int minEnumValue, out int maxEnumValue);
             int fuelType = getIntInput(message, minEnumValue, maxEnumValue);
             message.Clear();
             message.AppendLine("Please enter the amount of fuel you want to add:");
@@ -193,8 +192,7 @@ namespace ConsoleUI
 
             Console.Clear();
             Console.WriteLine(message);
-            int minEnumValue = Enum.GetValues(typeof(eVehicleStatus)).Cast<int>().Min();
-            int maxEnumValue = Enum.GetValues(typeof(eVehicleStatus)).Cast<int>().Max();
+            GarageManager.GetEnumMinMax<eVehicleStatus>(out int minEnumValue, out int maxEnumValue);
             message.Clear();
             int selectedstatus = getIntInput(message, minEnumValue, maxEnumValue);
             bool isLicenseExist = s_GarageManager.ChangeStatusOfVehicle(licenseNumber, (eVehicleStatus)selectedstatus);
@@ -210,13 +208,20 @@ namespace ConsoleUI
 
         private string getLicenseNumber()
         {
+            const bool v_InvalidLicenseNumber = true;
             const string k_LicenseNumberQuestion = "Please enter your vehicles license number:";
             string licenseNumber = string.Empty;
-            bool isLicenseNumberExist = false;
-            while(!isLicenseNumberExist)
+            while (v_InvalidLicenseNumber)
             {
                 licenseNumber = getStringInput(k_LicenseNumberQuestion);
-                s_GarageManager.IsLicenseNumberExist(licenseNumber, out isLicenseNumberExist);
+                s_GarageManager.IsLicenseNumberExist(licenseNumber, out bool isLicenseNumberExist);
+                if (isLicenseNumberExist)
+                {
+                    break;
+                }
+
+                Console.Clear();
+                Console.WriteLine($"The License Number You Entered ({licenseNumber}) Doesn't Exist. Please Try Again.{Environment.NewLine}");
             }
 
             return licenseNumber;
@@ -233,9 +238,8 @@ namespace ConsoleUI
                 message.AppendLine($"{index++}. {status}");
             }
 
-            message.AppendLine($"{index}. Dont filter by status");
-            int minEnumValue = Enum.GetValues(typeof(eVehicleStatus)).Cast<int>().Min();
-            int maxEnumValue = Enum.GetValues(typeof(eVehicleStatus)).Cast<int>().Max();
+            message.AppendLine($"{index}. Dont filter by status"); 
+            GarageManager.GetEnumMinMax<eVehicleStatus>(out int minEnumValue, out int maxEnumValue);
             int selectedFilter = getIntInput(message, minEnumValue, maxEnumValue + 1);
             if (selectedFilter != maxEnumValue + 1)
             {
@@ -247,10 +251,17 @@ namespace ConsoleUI
             }
 
             Console.Clear();
-            Console.WriteLine("Licenses Numbers In Garage:");
-            foreach (string licenseNumber in licenseNumbersResult)
+            if (licenseNumbersResult.Count > 0)
             {
-                Console.WriteLine(licenseNumber);
+                Console.WriteLine("Licenses Numbers In Garage:");
+                foreach (string licenseNumber in licenseNumbersResult)
+                {
+                    Console.WriteLine(licenseNumber);
+                }
+            }
+            else
+            {
+                Console.WriteLine("There are No Vehicles In The Garage That Match Your Filter");
             }
 
             return licenseNumbersResult;
@@ -295,85 +306,90 @@ namespace ConsoleUI
         {
             List<string> messages = s_VehicleCardModel.Vehicle.GetUniquePropertiesMessage();
             bool isAllInputsValid = false;
-
             while (!isAllInputsValid)
             {
-                messages.ForEach(Console.WriteLine);
                 List<string> propertiesData = new List<string>();
-                for (int i = 0; i < messages.Count; i++)
-                {
-                    propertiesData.Add(Console.ReadLine());
-                }
-
                 try
                 {
+                    foreach (string message in messages)
+                    {
+                        Console.Write(message);
+                        propertiesData.Add(Console.ReadLine());
+                        Console.WriteLine();
+                    }
+
                     s_VehicleCardModel.Vehicle.SetUniquePropertiesData(propertiesData);
                     isAllInputsValid = true;
                 }
-                catch (ValueOutOfRangeException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
                 catch (FormatException ex)
                 {
+                    Console.Clear();
                     Console.WriteLine(ex.Message);
                 }
-                finally
+                catch (ValueOutOfRangeException ex)
                 {
                     Console.Clear();
+                    Console.WriteLine(ex.Message);
                 }
             }
+
+            Console.Clear();
         }
 
         private void getWheelsAirPressure()
         {
-            try
+            bool v_InvalidAirPressure = true;
+            Console.WriteLine("Please enter current air pressure for all wheels:");
+            while (v_InvalidAirPressure)
             {
-                bool v_InvalidAirPressure = true;
-                Console.WriteLine("Please enter air pressure for all wheels:");
-                float airPressure = 0f;
-                while (v_InvalidAirPressure)
+                bool isFloat = float.TryParse(Console.ReadLine(), out float airPressure);
+                if (isFloat)
                 {
-                    bool isFloat = float.TryParse(Console.ReadLine(), out airPressure);
-
-                    if (isFloat)
+                    try
                     {
                         s_GarageManager.SetAirPressureForAllWheels(s_VehicleCardModel.Vehicle.Wheels, airPressure);
                         break;
                     }
+                    catch (ValueOutOfRangeException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Error! please enter a valid number");
                 }
             }
-            catch
-            {
-                // todo
-                // Console.WriteLine($"Please enter a valid number from {i_MinValue} to {i_MaxValue}");
-            }
+
+            Console.Clear();
         }
 
         private void getCurrentEnergyStatus()
         {
-            try
+            bool v_InvalidEnergyStatus = true;
+            Console.WriteLine("Please enter vehicle's current energy:");
+            while (v_InvalidEnergyStatus)
             {
-                bool v_InvalidEnergyStatus = true;
-                Console.WriteLine("Please enter vehicle's current energy:");
-                float currentEnergy = 0f;
-                while (v_InvalidEnergyStatus)
+                bool isFloat = float.TryParse(Console.ReadLine(), out float currentEnergy);
+                if (isFloat)
                 {
-                    bool isFloat = float.TryParse(Console.ReadLine(), out currentEnergy);
-
-                    if (isFloat)
+                    try
                     {
                         s_GarageManager.SetCurrentEnergyStatus(s_VehicleCardModel.Vehicle, currentEnergy);
                         break;
                     }
+                    catch (ValueOutOfRangeException ex)
+                    {
+                        Console.WriteLine($"Please enter a valid number from {ex.MinValue} to {ex.MaxValue}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Error! please enter a valid number");
                 }
             }
 
-            // to do -  need to thing what to do when user enter invalid inputs
-            catch (ValueOutOfRangeException ex)
-            {
-               Console.WriteLine($"Please enter a valid number from {ex.MinValue} to {ex.MaxValue}");
-            }
+            Console.Clear();
         }
 
         private void getVehicleType()
@@ -390,6 +406,7 @@ namespace ConsoleUI
             int selectedValue = getIntInput(message, minValue, maxValue);
             s_VehicleCardModel.VehicleType = (eVehicleType)selectedValue;
             s_GarageManager.CreateVehicle(s_VehicleCardModel);
+            Console.Clear();
         }
 
         private void getWheelsProducer()
@@ -449,13 +466,12 @@ namespace ConsoleUI
             while (v_IsNotValid)
             {
                 bool isNumber = int.TryParse(Console.ReadLine(), out selectedValue);
-
                 if (isNumber && selectedValue >= i_MinValue && selectedValue <= i_MaxValue)
                 {
                     break;
                 }
 
-                Console.WriteLine($"Please enter a valid number from {i_MinValue} to {i_MaxValue}");
+                Console.WriteLine($"Please enter a valid integer from {i_MinValue} to {i_MaxValue}");
             }
 
             return selectedValue;
@@ -469,7 +485,6 @@ namespace ConsoleUI
             while (v_IsNotValid)
             {
                 bool isFloat = float.TryParse(Console.ReadLine(), out selectedValue);
-
                 if (isFloat)
                 {
                     break;

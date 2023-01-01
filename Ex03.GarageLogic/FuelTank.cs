@@ -23,7 +23,15 @@ namespace Ex03.GarageLogic
                 throw new ArgumentException($"Wrong energy type. please enter the correct type: {r_FuelType.ToString()}.");
             }
 
-            CurrentEnergy = CurrentEnergy + i_EnergyQuantity;
+            if (i_EnergyQuantity > 0)
+            {
+                CurrentEnergy = CurrentEnergy + i_EnergyQuantity;
+            }
+            else
+            {
+                string errorMessage = $"Error! You Can't Add Negative Amount Of Fuel! The Service Was Not Completed.";
+                throw new ValueOutOfRangeException(errorMessage, new Exception(), 0, MaxEnergyCapacity - CurrentEnergy);
+            }
         }
 
         public FuelTank(eFuelType i_FuelType, float i_MaxAmountFuelInLiters)

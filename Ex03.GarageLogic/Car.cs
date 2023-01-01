@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Ex03.GarageLogic.Exceptions;
 
 namespace Ex03.GarageLogic
 {
@@ -77,30 +77,46 @@ namespace Ex03.GarageLogic
         private void validateColor(string i_CarColor)
         {
             bool isNumber = int.TryParse(i_CarColor, out int carColorNumber);
-            int minEnumValue = Enum.GetValues(typeof(eColor)).Cast<int>().Min();
-            int maxEnumValue = Enum.GetValues(typeof(eColor)).Cast<int>().Max();
-            if (isNumber && carColorNumber >= minEnumValue && carColorNumber <= maxEnumValue)
+            GarageManager.GetEnumMinMax<eColor>(out int minEnumValue, out int maxEnumValue);
+            if (isNumber)
             {
-                m_Color = (eColor)carColorNumber;
+                if (carColorNumber >= minEnumValue && carColorNumber <= maxEnumValue)
+                {
+                    m_Color = (eColor)carColorNumber;
+                }
+                else
+                {
+                    string errorMessage = $"Car Color Error! You Can Only Slect a Value between {minEnumValue} and {maxEnumValue}! Please Try Again.{Environment.NewLine}";
+                    throw new ValueOutOfRangeException(errorMessage, new Exception(), minEnumValue, maxEnumValue);
+                }
             }
             else
             {
-                // todo
+                string errorMessage = $"Car Color Error! Your input is not in the correct format! Please Try Again.{Environment.NewLine}";
+                throw new FormatException(errorMessage);
             }
         }
 
         private void validateDoorsCount(string i_DoorsCount)
         {
             bool isNumber = int.TryParse(i_DoorsCount, out int doorsCountNumber);
-            int minEnumValue = Enum.GetValues(typeof(eDoorsCount)).Cast<int>().Min();
-            int maxEnumValue = Enum.GetValues(typeof(eDoorsCount)).Cast<int>().Max();
-            if (isNumber && doorsCountNumber >= minEnumValue && doorsCountNumber <= maxEnumValue)
+            GarageManager.GetEnumMinMax<eDoorsCount>(out int minEnumValue, out int maxEnumValue);
+            if (isNumber)
             {
-                m_NumberOfDoors = (eDoorsCount)doorsCountNumber;
+                if (doorsCountNumber >= minEnumValue && doorsCountNumber <= maxEnumValue)
+                {
+                    m_NumberOfDoors = (eDoorsCount)doorsCountNumber;
+                }
+                else
+                {
+                    string errorMessage = $"Doors Count Error! You Can Only Slect a Value between {minEnumValue} and {maxEnumValue}! Please Try Again.{Environment.NewLine}";
+                    throw new ValueOutOfRangeException(errorMessage, new Exception(), minEnumValue, maxEnumValue);
+                }
             }
             else
             {
-                // todo
+                string errorMessage = $"Doors Count Error! Your input is not in the correct format! Please Try Again.{Environment.NewLine}";
+                throw new FormatException(errorMessage);
             }
         }
 

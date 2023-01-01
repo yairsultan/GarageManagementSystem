@@ -31,10 +31,10 @@ namespace Ex03.GarageLogic
             StringBuilder message = new StringBuilder();
             message.AppendLine("Please select is transporting hazardous materials:");
             message.AppendLine("1. True");
-            message.AppendLine($"2. False{Environment.NewLine}");
+            message.AppendLine("2. False");
             messagesList.Add(message.ToString());
             message.Clear();
-            message.AppendLine($"Plesae select maximum volume charge:{Environment.NewLine}");
+            message.AppendLine($"Plesae select maximum volume charge:");
             messagesList.Add(message.ToString());
 
             return messagesList;
@@ -57,13 +57,14 @@ namespace Ex03.GarageLogic
                 }
                 else
                 {
-                    string errorMessage = $"Error! You Can Only Slect a Value Between 1 and 2! Please Try Again.";
+                    string errorMessage = $"Hazardous Materials Error! You Can Only Slect a Value Between 1 and 2! Please Try Again.{Environment.NewLine}";
                     throw new ValueOutOfRangeException(errorMessage, new Exception(), 1, 2);
                 }
             }
             else
             {
-                throw new FormatException();
+                string errorMessage = $"Hazardous Materials Error! Your input is not in the correct format! Please Try Again.{Environment.NewLine}";
+                throw new FormatException(errorMessage);
             }
         }
 
@@ -78,13 +79,13 @@ namespace Ex03.GarageLogic
                 }
                 else
                 {
-                    string errorMessage = $"Error! You Can Only Slect a Value Grater then 0! Please Try Again.";
+                    string errorMessage = $"Volume Charge Error! You Can Only Slect a Value Grater then 0! Please Try Again.{Environment.NewLine}";
                     throw new ValueOutOfRangeException(errorMessage, new Exception(), 0, float.MaxValue);
                 }
             }
             else
             {
-                string errorMessage = $"Error! Your input is not in the correct format! Please Try Again.";
+                string errorMessage = $"Volume Charge Error! Your input is not in the correct format! Please Try Again.{Environment.NewLine}";
                 throw new FormatException(errorMessage);
             }
         }

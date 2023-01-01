@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using static Ex03.GarageLogic.FuelTank;
+using Ex03.GarageLogic.Exceptions;
 
 namespace Ex03.GarageLogic
 {
@@ -12,7 +7,15 @@ namespace Ex03.GarageLogic
     {
         public override void AddEnergy(float i_EnergyQuantity, eFuelType? i_FuelType = null)
         {
-            CurrentEnergy = CurrentEnergy + i_EnergyQuantity;
+            if (i_EnergyQuantity > 0)
+            {
+                CurrentEnergy = CurrentEnergy + i_EnergyQuantity;
+            }
+            else
+            {
+                string errorMessage = $"Error! You Can't Add Negative Charging Minutes! The Service Was Not Completed.";
+                throw new ValueOutOfRangeException(errorMessage, new Exception(), 0, MaxEnergyCapacity - CurrentEnergy);
+            }
         }
 
         public ElectricBattery(float i_MaxBatteryTimeInHours)

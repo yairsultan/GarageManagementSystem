@@ -10,19 +10,21 @@ namespace Ex03.GarageLogic
     {
         public static Dictionary<string, VehicleCard> s_VehiclesCards;
 
+        public GarageManager()
+        {
+            s_VehiclesCards = new Dictionary<string, VehicleCard>();
+        }
+
         public Dictionary<string, VehicleCard> GarageCustomer
         {
             get { return s_VehiclesCards; }
             set { s_VehiclesCards = value; }
         }
 
-        public GarageManager()
+        public static void GetEnumMinMax<T>(out int o_Min, out int o_Max)
         {
-            s_VehiclesCards = new Dictionary<string, VehicleCard>();
-        }
-
-        public void SetNameWheelsProducer(string name)
-        {
+            o_Min = Enum.GetValues(typeof(T)).Cast<int>().Min();
+            o_Max = Enum.GetValues(typeof(T)).Cast<int>().Max();
         }
 
         public void IsLicenseNumberExist(string licenseNumber, out bool i_IsLicenseNumberExist)
@@ -113,6 +115,10 @@ namespace Ex03.GarageLogic
                 }
 
                 tank.AddEnergy(i_FuelQuantity, i_FuelType);
+            }
+            else
+            {
+                throw new ArgumentException($"Error! The License Number You Entered ({i_LicenseNumber}) Doesn't Exist! The service was not completed.");
             }
         }
 

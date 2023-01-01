@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using static Ex03.GarageLogic.FuelTank;
+﻿using System.Collections.Generic;
 
 namespace Ex03.GarageLogic
 {
@@ -14,10 +7,10 @@ namespace Ex03.GarageLogic
         public static void CreateVehicle(VehicleCardModel i_VehicleCardModel)
         {
             List<Wheel> wheels = new List<Wheel>();
-            EnergySource energySource = null;
+            EnergySource energySource;
             int numberOfWheels = 0;
             float maxAirPressure = 0f;
-            float maxEnergyQuantity = 0f;
+            float maxEnergyQuantity;
 
             switch (i_VehicleCardModel.VehicleType)
             {
