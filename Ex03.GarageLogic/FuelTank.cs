@@ -31,7 +31,7 @@ namespace Ex03.GarageLogic
 
             if (i_EnergyQuantity > 0)
             {
-                CurrentEnergy = CurrentEnergy + i_EnergyQuantity;
+                CurrentEnergy += i_EnergyQuantity;
             }
             else
             {

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic
 {
@@ -27,12 +25,12 @@ namespace Ex03.GarageLogic
             o_Max = Enum.GetValues(typeof(T)).Cast<int>().Max();
         }
 
-        public void IsLicenseNumberExist(string licenseNumber, out bool i_IsLicenseNumberExist)
+        public void IsLicenseNumberExist(string i_LicenseNumber, out bool o_IsLicenseNumberExist)
         {
-            i_IsLicenseNumberExist = false;
-            if (s_VehiclesCards.ContainsKey(licenseNumber))
+            o_IsLicenseNumberExist = false;
+            if (s_VehiclesCards.ContainsKey(i_LicenseNumber))
             {
-                i_IsLicenseNumberExist = true;
+                o_IsLicenseNumberExist = true;
             }
         }
 

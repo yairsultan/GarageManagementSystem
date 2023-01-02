@@ -33,11 +33,6 @@ namespace Ex03.GarageLogic
             get { return r_ModelName; }
         }
 
-        public Vehicle(string i_LicenseNumber)
-        {
-            r_LicenseNumber = i_LicenseNumber;
-        }
-
         public Vehicle(List<Wheel> i_Wheels, EnergySource i_EnergySource, string i_ModelName, string i_LicenseNumber)
         {
             r_Wheels = i_Wheels;

@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Ex03.GarageLogic.Car;
-using static Ex03.GarageLogic.VehicleFactory;
-
-namespace Ex03.GarageLogic
+﻿namespace Ex03.GarageLogic
 {
     public class VehicleCardModel
     {
         private Vehicle m_vehicle;
         private eVehicleType m_VehicleType;
-        private eVehicleStatus m_VehicleStatus;
         private string m_OwnerName;
         private string m_OwnerPhoneNumber;
         private string m_ModelName;
@@ -59,12 +50,6 @@ namespace Ex03.GarageLogic
         {
             get { return m_OwnerPhoneNumber; }
             set { m_OwnerPhoneNumber = value; }
-        }
-
-        public eVehicleStatus VehicleStatus
-        {
-            get { return m_VehicleStatus; }
-            set { m_VehicleStatus = value; }
         }
     }
 }
